@@ -60,12 +60,10 @@ which bun && bun --version
 
 ### 2. 询问用户需求
 
-问用户想要什么宠物，包括：
-- **物种**（必选）：从 SPECIES 列表中选
-- **稀有度**（可选）：默认 legendary
-- **闪光**（可选）：默认是
-- **帽子**（可选）：从 HATS 列表中选
-- **Stats 偏好**（可选）：比如 "WISDOM 和 DEBUGGING 越高越好"
+用 AskUserQuestion 一次性问三个问题：
+1. **物种**（必选）：从 SPECIES 列表 18 种中选
+2. **名字**（可选）：自定义宠物名字。不提供则默认使用物种名（如 turtle 就叫 "turtle"）
+3. **高级选项**：稀有度、闪光、帽子、stats 需要调整吗？不需要则默认 legendary + shiny
 
 ### 3. 生成搜索脚本并运行
 
@@ -162,7 +160,7 @@ cp ~/.claude.json ~/.claude.json.bak-buddy
 
 **修改三个字段**：
 1. `userID` → 选定的 UID（如 `buddy-145297`）
-2. `companion` → `{}`（清空，强制重新孵化）
+2. `companion` → `{ "name": "用户指定的名字或物种名" }`（设名字，强制重新孵化）
 3. 删除 `oauthAccount.accountUuid`（防止覆盖 userID）
 
 用 Edit 工具精确修改这三个字段，不要重写整个文件。
