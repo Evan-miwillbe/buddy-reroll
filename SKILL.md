@@ -2,7 +2,8 @@
 name: buddy-reroll
 description:
   修改 Claude Code 的 buddy 宠物。用户想要更换或自定义 /buddy 宠物时触发。
-  支持指定物种、稀有度、闪光、帽子等属性，自动搜索匹配的 userID 并写入配置。
+  支持指定物种、名字、稀有度、闪光、帽子等属性，自动搜索匹配的 userID 并写入配置。
+  同时支持自定义名字和 personality。
 ---
 
 # Buddy Reroll Skill
@@ -127,8 +128,18 @@ function predict(uid, hashFn) {
   const eye = pick(rng, EYES);
   const hat = rarity === 'common' ? 'none' : pick(rng, HATS);
   const shiny = rng() < 0.01;
+  // Exact _C7 from binary: peak/valley system
+  const KC7 = {common:5, uncommon:15, rare:25, epic:35, legendary:50};
+  const q = KC7[rarity];
+  let peakStat = pick(rng, STAT_NAMES);
+  let valleyStat = pick(rng, STAT_NAMES);
+  while (valleyStat === peakStat) valleyStat = pick(rng, STAT_NAMES);
   const stats = {};
-  for (const s of STAT_NAMES) stats[s] = Math.floor(rng() * 100) + 1;
+  for (const s of STAT_NAMES) {
+    if (s === peakStat) stats[s] = Math.min(100, q + 50 + Math.floor(rng() * 30));
+    else if (s === valleyStat) stats[s] = Math.max(1, q - 10 + Math.floor(rng() * 15));
+    else stats[s] = q + Math.floor(rng() * 40);
+  }
   return { species, rarity, eye, hat, shiny, stats };
 }
 ```
