@@ -62,7 +62,7 @@ which bun && bun --version
 
 用 AskUserQuestion 一次性问三个问题：
 1. **物种**（必选）：从 SPECIES 列表 18 种中选
-2. **名字**（可选）：自定义宠物名字。不提供则默认使用物种名（如 turtle 就叫 "turtle"）
+2. **名字**（可选）：自定义宠物名字。不提供则留空，让 `/buddy` 孵化时 AI 自动生成（官方行为：根据物种和属性随机生成独特名字）
 3. **高级选项**：稀有度、闪光、帽子、stats 需要调整吗？不需要则默认 legendary + shiny
 
 ### 3. 生成搜索脚本并运行
@@ -160,7 +160,7 @@ cp ~/.claude.json ~/.claude.json.bak-buddy
 
 **修改三个字段**：
 1. `userID` → 选定的 UID（如 `buddy-145297`）
-2. `companion` → `{ "name": "用户指定的名字或物种名" }`（设名字，强制重新孵化）
+2. `companion` → `{}`（清空，强制重新孵化）。**仅当用户指定了自定义名字时**才设为 `{ "name": "用户指定的名字" }`
 3. 删除 `oauthAccount.accountUuid`（防止覆盖 userID）
 
 用 Edit 工具精确修改这三个字段，不要重写整个文件。
